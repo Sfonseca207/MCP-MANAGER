@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cursor-server": {
+      "command": "npx",
+      "args": ["-y", "@test/mcp"]
+    }
+  }
+}

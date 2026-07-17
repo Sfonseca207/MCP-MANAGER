@@ -1,0 +1,22 @@
+{
+  "preserved_root_key": "should remain",
+  "mcpServers": {
+    "test-server": {
+      "command": "npx",
+      "args": ["-y", "test-package"]
+    }
+  },
+  "projects": {
+    "/Users/test/project": {
+      "mcpServers": {
+        "project-server": {
+          "command": "node",
+          "args": ["server.js"]
+        }
+      }
+    }
+  },
+  "onboarding": {
+    "completed": true
+  }
+}
