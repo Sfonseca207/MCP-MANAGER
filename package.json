@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build --bundles app"
+    "tauri:icon": "python3 scripts/prepare-app-icon.py && tauri icon src/assets/app-icon-macos.png -o src-tauri/icons",
+    "tauri:build": "npm run tauri:icon && tauri build --bundles app"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

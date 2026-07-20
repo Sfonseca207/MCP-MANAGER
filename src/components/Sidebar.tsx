@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import {
-  Activity,
   Archive,
   Code2,
   LayoutDashboard,
@@ -15,6 +14,7 @@ import {
 } from "lucide-react";
 import type { ClientType } from "../lib/types";
 import { ALL_CLIENTS, CLIENT_LABELS } from "../lib/types";
+import appIcon from "../assets/app-icon-macos.png";
 
 export type Page =
   | "dashboard"
@@ -68,7 +68,11 @@ export function Sidebar({
       <div className="min-h-0 flex-1 overflow-y-auto p-4 pb-2">
         <div className="mb-6">
           <div className="flex items-center gap-2 text-lg font-semibold">
-            <Activity className="h-5 w-5 text-[var(--accent)]" />
+            <img
+              src={appIcon}
+              alt=""
+              className="h-6 w-6 rounded-md object-cover"
+            />
             MCP Manager
           </div>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
