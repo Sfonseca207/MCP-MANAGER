@@ -30,7 +30,7 @@ export function SettingsView({
 
         <button
           onClick={pickFolder}
-          className="mt-4 flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm text-white"
+          className="mt-4 flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm text-[var(--on-accent)]"
         >
           <FolderPlus className="h-4 w-4" />
           Agregar proyecto

@@ -280,7 +280,7 @@ export function McpForm({
             onClick={() => (inputMode === "json" ? switchToFields() : undefined)}
             className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
               inputMode === "fields"
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--on-accent)]"
                 : "text-[var(--text-muted)] hover:text-[var(--text)]"
             }`}
           >
@@ -291,7 +291,7 @@ export function McpForm({
             onClick={() => (inputMode === "fields" ? switchToJson() : undefined)}
             className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
               inputMode === "json"
-                ? "bg-[var(--accent)] text-white"
+                ? "bg-[var(--accent)] text-[var(--on-accent)]"
                 : "text-[var(--text-muted)] hover:text-[var(--text)]"
             }`}
           >
@@ -483,7 +483,7 @@ export function McpForm({
           <button
             type="submit"
             disabled={loading}
-            className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+            className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--on-accent)] disabled:opacity-50"
           >
             {loading ? "Guardando..." : isEdit ? "Guardar cambios" : "Guardar"}
           </button>

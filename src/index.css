@@ -3,16 +3,17 @@
 :root {
   color-scheme: dark;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-  --bg: #1c1c1e;
-  --bg-elevated: #2c2c2e;
-  --bg-hover: #3a3a3c;
-  --border: #3a3a3c;
-  --text: #f5f5f7;
-  --text-muted: #98989d;
-  --accent: #0a84ff;
-  --success: #30d158;
-  --warning: #ff9f0a;
-  --danger: #ff453a;
+  --bg: #000000;
+  --bg-elevated: #101010;
+  --bg-hover: #1c1c1c;
+  --border: #2a2a2a;
+  --text: #ffffff;
+  --text-muted: #8f8f8f;
+  --accent: #ffffff;
+  --on-accent: #000000;
+  --success: #ffffff;
+  --warning: #a3a3a3;
+  --danger: #ffffff;
 }
 
 * {

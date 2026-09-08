@@ -20,8 +20,6 @@ use utils::db_path;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_opener::init())
-        .plugin(tauri_plugin_shell::init())
         .setup(|app| {
             let conn = init_database().map_err(|e| e.to_string())?;
             let summary = BootstrapService::bootstrap_if_needed(&conn).map_err(|e| e.to_string())?;
@@ -139,6 +137,46 @@ mod tests {
         let result = atomic_write_json(&path, "{ invalid json }");
         assert!(result.is_err());
         assert!(!path.exists());
+    }
+
+    #[test]
+    fn project_write_keeps_private_servers_out_of_mcp_json() {
+        fn def(name: &str) -> McpDefinition {
+            McpDefinition {
+                name: name.to_string(),
+                transport_type: TransportType::Stdio,
+                command: Some("npx".into()),
+                args: None,
+                env: Some(BTreeMap::from([(
+                    "API_KEY".to_string(),
+                    "secret".to_string(),
+                )])),
+                url: None,
+                headers: None,
+            }
+        }
+
+        let existing_shared = BTreeMap::from([("shared".to_string(), def("shared"))]);
+        let existing_private = BTreeMap::from([("private".to_string(), def("private"))]);
+        // Merged map as produced by read_mcp_servers, plus a newly added server.
+        let merged = BTreeMap::from([
+            ("shared".to_string(), def("shared")),
+            ("private".to_string(), def("private")),
+            ("brand-new".to_string(), def("brand-new")),
+        ]);
+
+        let (shared_out, private_out) = crate::adapters::split_project_servers(
+            &merged,
+            &existing_shared,
+            &existing_private,
+        );
+
+        // The private server (with its API key) must never land in .mcp.json.
+        assert!(!shared_out.contains_key("private"));
+        assert!(private_out.contains_key("private"));
+        assert!(shared_out.contains_key("shared"));
+        assert!(shared_out.contains_key("brand-new"));
+        assert_eq!(private_out.len(), 1);
     }
 
     #[test]

@@ -70,8 +70,9 @@ cd src-tauri && cargo test
 
 - Tras habilitar/deshabilitar un MCP, **reinicia el cliente** correspondiente para que tome los cambios.
 - La app modifica únicamente las claves `mcpServers` / `servers` en los archivos de config, preservando el resto del JSON.
-- Los secretos (`env`/`headers`) se enmascaran en la UI y no se loguean.
+- Los secretos (`env`/`headers`) no se loguean ni se envían a ningún servicio externo; se muestran en el formulario de edición tal como están en los archivos de config locales.
+- Los backups guardan una copia del archivo de config completo (se conservan los últimos 20 por archivo).
 
 ## Licencia
 
-Uso personal.
+[MIT](LICENSE)

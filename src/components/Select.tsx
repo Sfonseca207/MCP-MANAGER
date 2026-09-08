@@ -74,7 +74,7 @@ export function SegmentedControl<T extends string = string>({
             "flex-1 rounded-md transition-colors",
             size === "sm" ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm",
             value === option.value
-              ? "bg-[var(--accent)] text-white"
+              ? "bg-[var(--accent)] text-[var(--on-accent)]"
               : "text-[var(--text-muted)] hover:text-[var(--text)]",
           )}
         >

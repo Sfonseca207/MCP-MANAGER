@@ -44,7 +44,7 @@ export function ReconciliationModal({
                 {conflict.kind === "new_external" && (
                   <button
                     onClick={() => onResolve(conflict, "import")}
-                    className="rounded-lg bg-[var(--accent)] px-3 py-1 text-xs text-white"
+                    className="rounded-lg bg-[var(--accent)] px-3 py-1 text-xs text-[var(--on-accent)]"
                   >
                     Importar
                   </button>
@@ -60,7 +60,7 @@ export function ReconciliationModal({
                 {conflict.kind === "definition_changed" && (
                   <button
                     onClick={() => onResolve(conflict, "import")}
-                    className="rounded-lg bg-[var(--accent)] px-3 py-1 text-xs text-white"
+                    className="rounded-lg bg-[var(--accent)] px-3 py-1 text-xs text-[var(--on-accent)]"
                   >
                     Actualizar catálogo
                   </button>

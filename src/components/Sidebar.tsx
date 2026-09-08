@@ -88,7 +88,7 @@ export function Sidebar({
               className={clsx(
                 "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
                 current === id
-                  ? "bg-[var(--accent)] text-white"
+                  ? "bg-[var(--accent)] text-[var(--on-accent)]"
                   : "text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text)]",
               )}
             >
@@ -113,7 +113,7 @@ export function Sidebar({
                 className={clsx(
                   "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
                   current === pageId
-                    ? "bg-[var(--accent)] text-white"
+                    ? "bg-[var(--accent)] text-[var(--on-accent)]"
                     : "text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text)]",
                 )}
               >
@@ -126,7 +126,7 @@ export function Sidebar({
                     className={clsx(
                       "shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-medium",
                       current === pageId
-                        ? "bg-white/20 text-white"
+                        ? "bg-[var(--on-accent)]/15 text-[var(--on-accent)]"
                         : "bg-[var(--success)]/15 text-[var(--success)]",
                     )}
                   >
@@ -144,7 +144,7 @@ export function Sidebar({
         <div className="flex flex-col gap-2">
           <button
             onClick={onAdd}
-            className="flex items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+            className="flex items-center justify-center gap-2 rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-medium text-[var(--on-accent)] hover:opacity-90"
           >
             <Plus className="h-4 w-4" />
             Agregar MCP

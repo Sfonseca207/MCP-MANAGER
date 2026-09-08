@@ -3,24 +3,43 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 pub fn atomic_write_json(path: &Path, content: &str) -> AppResult<()> {
+    // Validate before touching the filesystem so an invalid payload never
+    // leaves a stray temp file next to the client's config.
+    serde_json::from_str::<serde_json::Value>(content)
+        .map_err(|e| AppError::Message(format!("Invalid JSON: {e}")))?;
+
     let parent = path
         .parent()
         .ok_or_else(|| "Invalid file path".to_string())?;
     fs::create_dir_all(parent)?;
 
+    let unique = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_nanos())
+        .unwrap_or(0);
     let temp_path = parent.join(format!(
-        ".{}.tmp",
+        ".{}.{}.{}.tmp",
         path.file_name()
             .and_then(|n| n.to_str())
-            .unwrap_or("file")
+            .unwrap_or("file"),
+        std::process::id(),
+        unique
     ));
 
-    fs::write(&temp_path, content)?;
-    // Validate JSON before committing
-    serde_json::from_str::<serde_json::Value>(content)
-        .map_err(|e| AppError::Message(format!("Invalid JSON: {e}")))?;
-    fs::rename(&temp_path, path)?;
-    Ok(())
+    let result = (|| -> AppResult<()> {
+        {
+            use std::io::Write;
+            let mut file = fs::File::create(&temp_path)?;
+            file.write_all(content.as_bytes())?;
+            file.sync_all()?;
+        }
+        fs::rename(&temp_path, path)?;
+        Ok(())
+    })();
+    if result.is_err() {
+        let _ = fs::remove_file(&temp_path);
+    }
+    result
 }
 
 pub fn definition_hash(definition: &crate::models::McpDefinition) -> String {
@@ -73,8 +92,13 @@ pub fn expand_tilde(path: &str) -> AppResult<PathBuf> {
 }
 
 pub fn mask_secret(value: &str) -> String {
-    if value.len() <= 4 {
-        return "*".repeat(value.len());
+    // Fixed-width output so the mask never reveals the secret's length,
+    // char-based slicing so multibyte UTF-8 can't panic.
+    let chars: Vec<char> = value.chars().collect();
+    if chars.len() <= 8 {
+        return "********".into();
     }
-    format!("{}***{}", &value[..2], &value[value.len() - 2..])
+    let head: String = chars[..2].iter().collect();
+    let tail: String = chars[chars.len() - 2..].iter().collect();
+    format!("{head}********{tail}")
 }

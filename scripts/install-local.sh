@@ -19,5 +19,9 @@ cp -R "$SOURCE" "$DEST"
 # Firma ad-hoc para evitar bloqueos básicos de Gatekeeper
 codesign --force --deep --sign - "$DEST" 2>/dev/null || true
 
+# Evita duplicado en Spotlight (build vs /Applications)
+rm -rf "$SOURCE"
+
 echo "✓ Instalado en $DEST"
+echo "  Copia de build eliminada para no duplicar en Spotlight."
 echo "  Si macOS lo bloquea: clic derecho → Abrir"

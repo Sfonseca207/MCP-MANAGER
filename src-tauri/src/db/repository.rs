@@ -372,6 +372,24 @@ impl Repository {
         Ok(rows.filter_map(|r| r.ok()).collect())
     }
 
+    /// Deletes DB rows beyond the `keep` newest backups for a target file and
+    /// returns the backup file paths that should be removed from disk.
+    pub fn prune_backups(conn: &Connection, file_path: &str, keep: usize) -> AppResult<Vec<String>> {
+        let mut stmt = conn.prepare(
+            "SELECT id, backup_path FROM mcp_backups WHERE file_path = ?1 ORDER BY created_at DESC",
+        )?;
+        let rows: Vec<(String, String)> = stmt
+            .query_map(params![file_path], |row| Ok((row.get(0)?, row.get(1)?)))?
+            .filter_map(|r| r.ok())
+            .collect();
+        let mut removed = Vec::new();
+        for (id, backup_path) in rows.into_iter().skip(keep) {
+            conn.execute("DELETE FROM mcp_backups WHERE id = ?1", params![id])?;
+            removed.push(backup_path);
+        }
+        Ok(removed)
+    }
+
     pub fn upsert_snapshot(
         conn: &Connection,
         client: ClientType,
